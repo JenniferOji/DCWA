@@ -1,5 +1,7 @@
 var express = require('express')
 var mysqlDAO = require('./mysqlDao')
+var mongoDao = require('./mongoDao')
+
 let ejs = require('ejs');
 
 var app = express()
@@ -25,4 +27,16 @@ app.get("/", (req, res) => {
         res.send(error)
     })
 });
+
+app.get("/lecturers", (req, res) => {
+    mongoDao.findAll()
+    .then((data) => {
+        console.log(data)
+        res.send(data)
+    })
+    .catch((error) => {
+        console.log(JSON.stringify(error))
+        res.send(error)
+    })
+})
 
