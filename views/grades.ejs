@@ -1,0 +1,15 @@
+<table>
+    <h1>Grades</h1>
+        <tr>
+            <th>Student</th>
+            <th>Module</th>
+            <th>Grade</th>
+        </tr>
+        <% gradeList.forEach((grade) => { %>
+            <tr>
+                <td><%= grade.Student %></td> 
+                <td><%= grade.Module %></td>  
+                <td><%= grade.Grade %></td>         
+            </tr>
+        <% }) %>
+</table>

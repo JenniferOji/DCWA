@@ -16,6 +16,10 @@ app.listen(3004, () => {
 })
 
 app.get("/", (req, res) => {
+    res.render("home")
+});
+
+app.get("/students", (req, res) => {
     mysqlDAO.getStudents()
     .then((data) => {
         //res.send(data)
@@ -28,11 +32,24 @@ app.get("/", (req, res) => {
     })
 });
 
+app.get("/Grades", (req, res) => {
+    mysqlDAO.getGrades()
+    .then((data) => {
+        res.render("grades", {gradeList: data})
+    })
+    .catch((error) => {
+        res.send(error)
+    })
+});
+
+
 app.get("/lecturers", (req, res) => {
     mongoDao.findAll()
     .then((data) => {
-        console.log(data)
-        res.send(data)
+        // console.log(data)
+        // res.send(data)
+        res.render("lecturers", {LecturerList: data})
+
     })
     .catch((error) => {
         console.log(JSON.stringify(error))

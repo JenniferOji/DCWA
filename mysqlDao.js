@@ -36,6 +36,19 @@ var getStudents = function(){
     })
 }
 
+var getGrades = function(){
+    return new Promise((resolve, reject) => {
+        //sending query from the database
+        pool.query('select s.name AS Student, m.name AS Module, g.grade AS Grade from student s LEFT JOIN grade g ON s.sid=g.sid LEFT join module m ON g.mid=m.mid ORDER BY s.name, g.grade;')
+            .then((data) => {
+                console.log(data)
+                resolve(data)
+            })
+            .catch((error) => {
+                console.log(error)
+                reject(error)
+            })
+    })
+}
 
-
-module.exports = {getStudents}
+module.exports = {getStudents, getGrades}

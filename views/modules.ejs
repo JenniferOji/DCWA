@@ -1,0 +1,18 @@
+<table>
+    <h1>Grades</h1>
+        <tr>
+            <th>mid</th>
+            <th>name</th>
+            <th>credts</th>
+            <th>lecturer</th>
+
+        </tr>
+        <% moduleList.forEach((module) => { %>
+            <tr>
+                <td><%= module.mid %></td> 
+                <td><%= module.name %></td>  
+                <td><%= module.credits %></td>         
+                <td><%= module.lecturer %></td>         
+            </tr>
+        <% }) %>
+</table>
