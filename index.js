@@ -57,3 +57,8 @@ app.get("/lecturers", (req, res) => {
     })
 })
 
+app.get("/lecturers/delete/:id", (req, res) => {
+    res.send(req.params.id)    
+    mongoDao.deleteLecturer(req.params.id)
+})
+

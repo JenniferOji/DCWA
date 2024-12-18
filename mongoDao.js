@@ -21,6 +21,18 @@ var findAll = function() {
     });
 }
 
+var deleteLecturer = function(id){
+    return new Promise((resolve, reject) => {
+        db.collection('lecturers').deleteOne({ _id: id }) 
+            .then((documents) => {
+                resolve(documents);  // Return the fetched documents
+                console.log("deleted successfully")
+            })
+            .catch((error) => {
+                reject(error);  // Handle errors
+            });
+    });
+}
 
-module.exports = {findAll}
+module.exports = {findAll, deleteLecturer}
 

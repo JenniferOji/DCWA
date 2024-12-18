@@ -14,7 +14,7 @@
                 <td><%= Lecturer._id %></td>
                 <td><%= Lecturer.name %></td>
                 <td><%= Lecturer.did %></td>
-                <td><a href="/">Delete</a></td>
+                <td><a href="/lecturers/delete/<%= Lecturer._id %>">Delete</a></td>
             </tr>
         <% }) %>
 </table>
