@@ -32,6 +32,10 @@ app.get("/students", (req, res) => {
     })
 });
 
+app.get("/addStudent", (req, res) => {
+    res.send("ok")
+});
+
 app.get("/Grades", (req, res) => {
     mysqlDAO.getGrades()
     .then((data) => {
