@@ -36,6 +36,35 @@ var getStudents = function(){
     })
 }
 
+var studentById = function(id){
+    return new Promise((resolve, reject) => {
+        //sending query from the database
+        pool.query('SELECT * FROM student WHERE sid = ?', [id])
+        .then((data) => {
+                console.log(data)
+                resolve(data)
+            })
+            .catch((error) => {
+                console.log(error)
+                reject(error)
+            })
+    })
+}
+
+// var updateStudent = function(id, name, age){
+//     return new Promise((resolve, reject) => {
+//         db.collection('students').update({ _id: id }) 
+//             .then((documents) => {
+//                 resolve(documents);  // Return the fetched documents
+//                 console.log("deleted successfully")
+//             })
+//             .catch((error) => {
+//                 reject(error);  // Handle errors
+//             });
+//     });
+    
+// }
+
 var getGrades = function(){
     return new Promise((resolve, reject) => {
         //sending query from the database
@@ -51,4 +80,4 @@ var getGrades = function(){
     })
 }
 
-module.exports = {getStudents, getGrades}
+module.exports = {getStudents, getGrades, studentById}

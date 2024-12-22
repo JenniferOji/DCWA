@@ -33,8 +33,20 @@ app.get("/students", (req, res) => {
 });
 
 app.get("/addStudent", (req, res) => {
-    res.send("ok")
+    res.render("newStudent")
 });
+
+
+app.get("/updateStudent/:sid", (req, res) => {
+    mysqlDAO.studentById(req.params.sid)
+    .then((data) => {
+        console.log(data)
+        res.render("updateStudent", {student: data}); 
+    })
+    .catch((error) => {
+        res.send(error)
+    })
+})
 
 app.get("/Grades", (req, res) => {
     mysqlDAO.getGrades()
