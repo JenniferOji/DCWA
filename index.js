@@ -38,21 +38,42 @@ app.get("/students", (req, res) => {
 });
 
 app.get("/students/add", (req, res) => {
-    res.render("newStudent")
+    res.render("newStudent", { errors: []}) //passing an empty array of errors
 
 })
 
 app.post("/students/add", (req, res) => {
-    const {sid, name, age} = req.body;
-    mysqlDAO.addStudent(sid, name, age) 
+    const { sid, name, age } = req.body;
+
+    //the array of errors that could output
+    let errors = [];
+
+    if (sid.length !== 4) {
+        errors.push("Student ID should be 4 characters.");
+    }
+    if (name.length < 2) {
+        errors.push("Student Name should be at least 2 characters.");
+    }
+    if (age < 18) {
+        errors.push("Student age should be at least 18.");
+    }
+
+    //if there are errors it re renders the newstuent page
+    if (errors.length > 0) {
+        return res.render("newStudent", {
+            errors//passing the errors to the page
+        });
+    }
+
+    //adding the student if there are no errors
+    mysqlDAO.addStudent(sid, name, age)
         .then(() => {
-            res.redirect("/students")
+            res.redirect("/students");
         })
         .catch((error) => {
-            res.send("an error occured")
+            res.send(error)
         });
-})
-
+});
 
 app.get("/students/edit/:sid", (req, res) => {
     mysqlDAO.studentById(req.params.sid)
