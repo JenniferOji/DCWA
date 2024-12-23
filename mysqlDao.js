@@ -36,6 +36,41 @@ var getStudents = function(){
     })
 }
 
+var getModules = function(){
+    return new Promise((resolve, reject) => {
+        //sending query from the database
+        pool.query('SELECT * FROM module')
+            .then((data) => {
+                console.log(data)
+                resolve(data)
+            })
+            .catch((error) => {
+                console.log(error)
+                reject(error)
+            })
+    })
+}
+
+var getModuleLecturer = function(lid){
+    // SELECT * FROM module WHERE lecturer = 'L001'
+    return new Promise((resolve, reject) => {
+        //sending query from the database
+        pool.query('SELECT * FROM module WHERE lecturer = ?', [lid])
+        .then((data) => {
+            if (data.length > 0) {//checking if it did not returned an empty array/set 
+                resolve(true); //the lectuer has a module
+            } 
+            else {
+                resolve(false); //lectuer does not have a module
+            }
+            })
+            .catch((error) => {
+                console.log(error)
+                reject(error)
+            })
+    })
+}
+
 var studentById = function(id){
     return new Promise((resolve, reject) => {
         //sending query from the database
@@ -96,4 +131,4 @@ var getGrades = function(){
     })
 }
 
-module.exports = {getStudents, getGrades, studentById, addStudent, updateStudent}
+module.exports = {getStudents, getGrades, studentById, addStudent, updateStudent, getModules, getModuleLecturer}

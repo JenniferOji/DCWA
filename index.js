@@ -102,11 +102,50 @@ app.get("/lecturers", (req, res) => {
 })
 
 app.get("/lecturers/delete/:lid", (req, res) => {
-    if (mongoDao.deleteLecturer(req.params.lid)){
-        res.redirect("/lecturers")  
-    }
-    else{
-        res.send(req.params.lid)       
-    }
+    const lid = req.params.lid; //lid from re param
+    mysqlDAO.getModuleLecturer(lid)
+    .then(exists => {//the result of the function
+        if (exists) {//checkin the result
+            //res.send("Cannot delete lecturer, they have associated modules.");       
+            res.render("deletion", {lid})
+
+        } 
+        else {
+            //deleting lecturer if he/she has no associated modules
+            mongoDao.deleteLecturer(lid)
+            .then(() => {
+                res.redirect("/lecturers")
+            })
+            .catch((error) => {
+                res.send(error)
+            });                
+        }
+    })
+    .catch((error) => {
+        res.send(error)
+    });
+    
 })
+// // app.get("/students/edit/:sid", (req, res) => {
+//     mysqlDAO.studentById(req.params.sid)
+//     .then((data) => {
+//         console.log(data)
+//         res.render("updateStudent", {student: data}); 
+//     })
+//     .catch((error) => {
+//         res.send(error)
+//     })
+// })
+app.get("/modules", (req, res) => {
+    mysqlDAO.getModules()
+    .then((data) => {
+        //res.send(data)
+        //sending the students file instead of the raw data - passing in the students db to the students filel
+        //console.log(JSON.stringify(data)) - locating th eerror and seeing the data it outputs 
+        res.render("modules", {moduleList: data})
+    })
+    .catch((error) => {
+        res.send(error)
+    })
+});
 
