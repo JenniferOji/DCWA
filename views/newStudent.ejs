@@ -1,13 +1,14 @@
 <h1>Add Student</h1>
-<form>
-    <label for="firstname">Student ID: </label>
-    <input type="text" name="firstname"  required>
+<form action="/students/add" method="POST">
+    <label for="sid">Student ID: </label>
+    <input type="text" name="sid"  required>
     <br>
-    <label for="lastname">Name: </label>
-    <input type="text" name="lastname"  required>
+    <label for="name">Name: </label>
+    <input type="text" name="name"  required>
     <br>
-    <label for="email">Age: </label>
-    <input type="email" name="email"  required>
+    <label for="age">Age: </label>
+    <input type="number" name="age"  required>
     <br>
     <input type="submit" value="Add">
+    
 </form>

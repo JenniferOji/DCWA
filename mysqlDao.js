@@ -51,19 +51,35 @@ var studentById = function(id){
     })
 }
 
-// var updateStudent = function(id, name, age){
-//     return new Promise((resolve, reject) => {
-//         db.collection('students').update({ _id: id }) 
-//             .then((documents) => {
-//                 resolve(documents);  // Return the fetched documents
-//                 console.log("deleted successfully")
-//             })
-//             .catch((error) => {
-//                 reject(error);  // Handle errors
-//             });
-//     });
-    
-// }
+var updateStudent = function(sid,name,age) {
+    return new Promise((resolve, reject) => {
+        //sending query from the database
+        pool.query('UPDATE student SET name = ?, age = ? WHERE sid = ?', [name,age, sid])
+        .then((data) => {
+                console.log(data)
+                resolve(data)
+            })
+            .catch((error) => {
+                console.log(error)
+                reject(error)
+            })
+    })
+}
+
+var addStudent = function(sid,name,age){
+    return new Promise((resolve, reject) => {
+        pool.query('INSERT INTO student (sid, name, age) VALUES (?, ?, ?)' , [sid, name,age])
+        .then((data) => {
+                console.log(data)
+                resolve(data)
+            })
+            .catch((error) => {
+                console.log(error)
+                reject(error)
+            })
+    })
+}
+
 
 var getGrades = function(){
     return new Promise((resolve, reject) => {
@@ -80,4 +96,4 @@ var getGrades = function(){
     })
 }
 
-module.exports = {getStudents, getGrades, studentById}
+module.exports = {getStudents, getGrades, studentById, addStudent, updateStudent}

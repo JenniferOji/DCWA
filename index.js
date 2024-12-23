@@ -1,10 +1,15 @@
 var express = require('express')
 var mysqlDAO = require('./mysqlDao')
 var mongoDao = require('./mongoDao')
+const bodyParser = require('body-parser'); //pull from req body
 
 let ejs = require('ejs');
 
 var app = express()
+
+//middlewear to parse body 
+app.use(bodyParser.urlencoded({ extended: true }));
+
 
 //must be set after the app variable 
 app.set('view engine', 'ejs')
@@ -32,12 +37,24 @@ app.get("/students", (req, res) => {
     })
 });
 
-app.get("/addStudent", (req, res) => {
+app.get("/students/add", (req, res) => {
     res.render("newStudent")
-});
+
+})
+
+app.post("/students/add", (req, res) => {
+    const {sid, name, age} = req.body;
+    mysqlDAO.addStudent(sid, name, age) 
+        .then(() => {
+            res.redirect("/students")
+        })
+        .catch((error) => {
+            res.send("an error occured")
+        });
+})
 
 
-app.get("/updateStudent/:sid", (req, res) => {
+app.get("/students/edit/:sid", (req, res) => {
     mysqlDAO.studentById(req.params.sid)
     .then((data) => {
         console.log(data)
@@ -47,6 +64,17 @@ app.get("/updateStudent/:sid", (req, res) => {
         res.send(error)
     })
 })
+
+app.post("/students/edit/:sid", (req, res) => {
+    const { sid, name, age } = req.body;
+    mysqlDAO.updateStudent(sid, name, age) 
+        .then(() => {
+            res.redirect("/students")
+        })
+        .catch((error) => {
+            res.send(error)
+        });
+});
 
 app.get("/Grades", (req, res) => {
     mysqlDAO.getGrades()
