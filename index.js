@@ -76,7 +76,7 @@ app.post("/students/edit/:sid", (req, res) => {
         });
 });
 
-app.get("/Grades", (req, res) => {
+app.get("/grades", (req, res) => {
     mysqlDAO.getGrades()
     .then((data) => {
         res.render("grades", {gradeList: data})
@@ -101,8 +101,12 @@ app.get("/lecturers", (req, res) => {
     })
 })
 
-app.get("/lecturers/delete/:id", (req, res) => {
-    res.send(req.params.id)    
-    mongoDao.deleteLecturer(req.params.id)
+app.get("/lecturers/delete/:lid", (req, res) => {
+    if (mongoDao.deleteLecturer(req.params.lid)){
+        res.redirect("/lecturers")  
+    }
+    else{
+        res.send(req.params.lid)       
+    }
 })
 

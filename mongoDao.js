@@ -10,7 +10,7 @@ MongoClient.connect('mongodb://127.0.0.1:27017')
 
 var findAll = function() {
     return new Promise((resolve, reject) => {
-        var cursor = coll.find()  // Ensure 'coll' is the correct collection
+        var cursor = coll.find().sort({_id: 1})  // Ensure 'coll' is the correct collection
         cursor.toArray()
             .then((documents) => {
                 resolve(documents);  // Return the fetched documents
