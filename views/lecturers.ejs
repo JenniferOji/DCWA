@@ -1,3 +1,9 @@
+<style>
+    table, th, td {
+        border: 1px solid black;
+    }
+</style>
+
 <table>
     <h1>Lecturers</h1>
     <tr><a href="/">Home</a></tr>
@@ -8,8 +14,7 @@
             <th>Action</th>
 
         </tr>
-        <% LecturerList.forEach((Lecturer) =>
-        { %>
+        <% LecturerList.forEach((Lecturer) =>{ %>
             <tr>
                 <td><%= Lecturer._id %></td>
                 <td><%= Lecturer.name %></td>

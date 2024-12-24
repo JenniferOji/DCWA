@@ -1,25 +1,28 @@
+<style>
+    table, th, td {
+        border: 1px solid black;
+    }
+</style>
+
 <table>
     <h1>Students</h1>
+    <tr><a href="/">Home</a></tr>
+    <br>
+    <tr><a href="/students/add">Add Student</a></tr>
+  
     <tr>
-        <td><a href="/">Home</a></td>
-    </tr>
-    <tr></tr>
-        <td><a href="/students/add">Add Student</a></td>
-    </tr>
-        <tr>
-            <th>Student ID</th>
-            <th>Name</th>
-            <th>Age</th>
-            <th>Action</th>
+        <th>Student ID</th>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Action</th>
 
-        </tr>
-        <% studentList.forEach((student) =>
-        { %>
-            <tr>
-                <td><%= student.sid %></td>
-                <td><%= student.name %></td>
-                <td><%= student.age %></td>
-                <td><a href="/students/edit/<%= student.sid %>">Update</a></td>
+    </tr>
+    <% studentList.forEach((student) =>{ %>
+        <tr>
+            <td style="border: 1px solid black;"><%= student.sid %></td>
+            <td><%= student.name %></td>
+            <td><%= student.age %></td>
+            <td><a href="/students/edit/<%= student.sid %>">Update</a></td>
             </tr>
-        <% }) %>
+    <% }) %>
 </table>
