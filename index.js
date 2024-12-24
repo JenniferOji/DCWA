@@ -38,41 +38,47 @@ app.get("/students", (req, res) => {
 });
 
 app.get("/students/add", (req, res) => {
-    res.render("newStudent", { errors: []}) //passing an empty array of errors
+    res.render("newStudent", {errors: [], student:[]}) //passing an empty array of errors and students
 
 })
 
 app.post("/students/add", (req, res) => {
     const { sid, name, age } = req.body;
-
-    //the array of errors that could output
+    //an array for holding the errors 
     let errors = [];
 
-    if (sid.length !== 4) {
-        errors.push("Student ID should be 4 characters.");
-    }
-    if (name.length < 2) {
-        errors.push("Student Name should be at least 2 characters.");
-    }
-    if (age < 18) {
-        errors.push("Student age should be at least 18.");
-    }
+    //checking if the student ID already exists
+    mysqlDAO.studentById(sid)
+    .then((data) => {
+        if (data.length > 0) { //checkin if an empty set was not returned 
+            errors.push("Student ID " + sid + " already exists.");
+        } 
+        if (sid.length !== 4) {
+            errors.push("Student ID should be 4 characters.");
+        }
+        if (name.length < 2) {
+            errors.push("Student Name should be at least 2 characters.");
+        }
+        if (age < 18) {
+            errors.push("Student age should be at least 18.");
+        }
 
-    //if there are errors it re renders the newstuent page
-    if (errors.length > 0) {
-        return res.render("newStudent", {
-            errors//passing the errors to the page
-        });
-    }
+        //if there are errors it re renders the newStudent page
+        if (errors.length > 0) {
+            return res.render("newStudent", {errors, student: { sid, name, age } })
+        }
 
-    //adding the student if there are no errors
-    mysqlDAO.addStudent(sid, name, age)
+        //adding the student if there are no errors
+        return mysqlDAO.addStudent(sid, name, age)
         .then(() => {
             res.redirect("/students");
-        })
-        .catch((error) => {
-            res.send(error)
         });
+
+    })
+    .catch((error) => {
+        console.log(error)
+    });
+
 });
 
 app.get("/students/edit/:sid", (req, res) => {
@@ -129,7 +135,6 @@ app.get("/lecturers/delete/:lid", (req, res) => {
         if (exists) {//checkin the result
             //res.send("Cannot delete lecturer, they have associated modules.");       
             res.render("deletion", {lid})
-
         } 
         else {
             //deleting lecturer if he/she has no associated modules
@@ -147,16 +152,7 @@ app.get("/lecturers/delete/:lid", (req, res) => {
     });
     
 })
-// // app.get("/students/edit/:sid", (req, res) => {
-//     mysqlDAO.studentById(req.params.sid)
-//     .then((data) => {
-//         console.log(data)
-//         res.render("updateStudent", {student: data}); 
-//     })
-//     .catch((error) => {
-//         res.send(error)
-//     })
-// })
+
 app.get("/modules", (req, res) => {
     mysqlDAO.getModules()
     .then((data) => {

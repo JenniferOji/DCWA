@@ -1,9 +1,9 @@
 <h1>Update student</h1>
 <% student.forEach((student) =>
 { %>
-<form action="/students/edit/:sid" method="POST">
-    <label for="sid">Student ID: </label>
-    <input type="text" name="sid" value="<%= student.sid %>" readonly>
+    <form action="/students/edit/<%= student.sid %>" method="POST">
+        <label for="sid">Student ID: </label>
+    <input type="text" name="sid" value="<%= student.sid %>" required>
     <br>
     <label for="name">Name: </label>
     <input type="text" name="name" value="<%= student.name %>" required>
