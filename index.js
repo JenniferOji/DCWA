@@ -85,7 +85,7 @@ app.get("/students/edit/:sid", (req, res) => {
     mysqlDAO.studentById(req.params.sid)
     .then((data) => {
         console.log(data)
-        res.render("updateStudent", {student: data}); 
+        res.render("updateStudent", {errors: [], student: data}); 
     })
     .catch((error) => {
         res.send(error)
@@ -94,6 +94,23 @@ app.get("/students/edit/:sid", (req, res) => {
 
 app.post("/students/edit/:sid", (req, res) => {
     const { sid, name, age } = req.body;
+    //an array for holding the errors 
+    let errors = [];
+    let student = [sid,name,age]
+    //pushing errors to the array
+    if (name.length < 2) {
+        errors.push("Student Name should be at least 2 characters.");
+    }
+    if (age < 18) {
+        errors.push("Student age should be at least 18.");
+    }
+
+    //if there are errors it re renders the updateStudent page
+    if (errors.length > 0) {
+        return res.render("updateStudent", {errors, student});
+    }
+
+    //updatung the student if there are no errors 
     mysqlDAO.updateStudent(sid, name, age) 
         .then(() => {
             res.redirect("/students")
