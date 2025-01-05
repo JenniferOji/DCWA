@@ -2,20 +2,49 @@
     table, th, td {
         border: 1px solid black;
     }
-</style>
 
-<table>
-    <h1>Grades</h1>
-        <tr>
-            <th>Student</th>
-            <th>Module</th>
-            <th>Grade</th>
-        </tr>
-        <% gradeList.forEach((grade) => { %>
+    th, td {
+        padding: 4px;
+    }
+
+    .tables-container {
+        display: flex;
+        gap: 100px;
+    }
+</style>
+<div class="tables-container">
+    <!-- Displaying the table on the left containg the students grades -->
+    <div>
+        <table>
+            <h1>Grades</h1>
+            <tr><a href="/">Home</a></tr>
+                <tr>
+                    <th>Student</th>
+                    <th>Module</th>
+                    <th>Grade</th>
+                </tr>
+                <% gradeList.forEach((grade) => { %>
+                    <tr>
+                        <td><%= grade.Student %></td> 
+                        <td><%= grade.Module %></td>  
+                        <td><%= grade.Grade %></td>         
+                    </tr>
+                <% }) %>
+        </table>'
+    </div>
+    <div>
+        <h1>Students Average</h1>      
+        <table style="margin-top: 40px;">
             <tr>
-                <td><%= grade.Student %></td> 
-                <td><%= grade.Module %></td>  
-                <td><%= grade.Grade %></td>         
+                <th>Student</th>
+                <th>Average Grade</th>
             </tr>
-        <% }) %>
-</table>
+            <% avgGradeList.forEach((student) => { %>
+                <tr>
+                    <td><%= student.name %></td>
+                    <td><%= student.Average %></td>      
+                </tr>
+            <% }) %>
+        </table>
+    </div>
+</div>

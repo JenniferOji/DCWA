@@ -121,15 +121,14 @@ app.post("/students/edit/:sid", (req, res) => {
 });
 
 app.get("/grades", (req, res) => {
-    mysqlDAO.getGrades()
-    .then((data) => {
-        res.render("grades", {gradeList: data})
+    Promise.all([mysqlDAO.getGrades(), mysqlDAO.getStudentAverageGrade()])
+    .then(([data, modules]) => {
+        res.render("grades", {gradeList: data, avgGradeList: modules})
     })
     .catch((error) => {
         res.send(error)
     })
 });
-
 
 app.get("/lecturers", (req, res) => {
     mongoDao.findAll()
@@ -171,15 +170,15 @@ app.get("/lecturers/delete/:lid", (req, res) => {
 })
 
 app.get("/modules", (req, res) => {
-    mysqlDAO.getModules()
-    .then((data) => {
+    Promise.all([mysqlDAO.getModules(), mysqlDAO.getAverageGradeForModule()])
+    .then(([data, modules]) => {
         //res.send(data)
         //sending the students file instead of the raw data - passing in the students db to the students filel
-        //console.log(JSON.stringify(data)) - locating th eerror and seeing the data it outputs 
-        res.render("modules", {moduleList: data})
+        res.render("modules", {moduleList: data, avgGradeList: modules })
     })
     .catch((error) => {
         res.send(error)
     })
 });
+
 

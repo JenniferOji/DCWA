@@ -36,10 +36,24 @@ var getStudents = function(){
     })
 }
 
+var getStudentAverageGrade= function(){
+    return new Promise((resolve, reject) => {
+        //sending query from the database
+        pool.query('SELECT s.name, ROUND(AVG(g.grade), 2) AS Average FROM student s LEFT JOIN grade g ON s.sid = g.sid GROUP BY s.sid ORDER BY s.name;')
+            .then((data) => {
+                console.log(data)
+                resolve(data)
+            })
+            .catch((error) => {
+                console.log(error)
+                reject(error)
+            })
+    })
+}
 var getModules = function(){
     return new Promise((resolve, reject) => {
         //sending query from the database
-        pool.query('SELECT * FROM module')
+        pool.query('SELECT lecturer, mid, name, credits FROM module ORDER BY name;')
             .then((data) => {
                 console.log(data)
                 resolve(data)
@@ -131,4 +145,19 @@ var getGrades = function(){
     })
 }
 
-module.exports = {getStudents, getGrades, studentById, addStudent, updateStudent, getModules, getModuleLecturer}
+var getAverageGradeForModule= function(){
+    return new Promise((resolve, reject) => {
+        //sending query from the database
+        pool.query('SELECT  m.name AS Module, ROUND(AVG(g.grade), 2) AS Average_Grade FROM grade g LEFT JOIN module m ON m.mid = g.mid GROUP BY g.mid ORDER BY m.name;')
+            .then((data) => {
+                console.log(data)
+                resolve(data)
+            })
+            .catch((error) => {
+                console.log(error)
+                reject(error)
+            })
+    })
+}
+
+module.exports = {getStudents, getGrades, studentById, addStudent, updateStudent,getStudentAverageGrade, getModules, getAverageGradeForModule, getModuleLecturer}

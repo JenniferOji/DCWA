@@ -2,22 +2,55 @@
     table, th, td {
         border: 1px solid black;
     }
-</style>
-<table>
-    <h1>Grades</h1>
-        <tr>
-            <th>mid</th>
-            <th>name</th>
-            <th>credts</th>
-            <th>lecturer</th>
 
-        </tr>
-        <% moduleList.forEach((module) => { %>
+    th, td {
+    padding: 4px;
+    }
+    
+    .tables-container {
+        display: flex;
+        gap: 100px;
+    }
+</style>
+<div class="tables-container">
+    <!-- Displaying the table on the left containg the students grades -->
+    <div>
+    <h1>Modules</h1>
+        <table>
+            <tr><a href="/">Home</a></tr>
             <tr>
-                <td><%= module.mid %></td> 
-                <td><%= module.name %></td>  
-                <td><%= module.credits %></td>         
-                <td><%= module.lecturer %></td>         
+                <th>lecturer</th>
+                <th>mid</th>
+                <th>module</th>
+                <th>credits</th>
+
+            </tr>
+            <% moduleList.forEach((module) => { %>
+                <tr>       
+                    <td><%= module.lecturer %></td>  
+                    <td><%= module.mid %></td> 
+                    <td><%= module.name %></td>  
+                    <td><%= module.credits %></td>         
+                </tr>
+            <% }) %>
+    </table>
+    </div>
+
+    <div>
+        <h1>Average Module Grade</h1>
+        <br>
+    <table>
+        <tr>
+            <th>Module</th>
+            <th>Average Grade</th>
+        </tr>
+        <% avgGradeList.forEach((module) => { %>
+            <tr>
+                <td><%= module.Module %></td>  
+                <td><%= module.Average_Grade %></td>         
             </tr>
         <% }) %>
-</table>
+    </table>
+    </div>
+
+</div>

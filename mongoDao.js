@@ -10,13 +10,13 @@ MongoClient.connect('mongodb://127.0.0.1:27017')
 
 var findAll = function() {
     return new Promise((resolve, reject) => {
-        var cursor = coll.find().sort({_id: 1})  // Ensure 'coll' is the correct collection
+        var cursor = coll.find().sort({_id: 1}) 
         cursor.toArray()
             .then((documents) => {
-                resolve(documents);  // Return the fetched documents
+                resolve(documents);  //returning the fetched documents
             })
             .catch((error) => {
-                reject(error);  // Handle errors
+                reject(error);  //handling errors 
             });
     });
 }
@@ -25,11 +25,11 @@ var deleteLecturer = function(id){
     return new Promise((resolve, reject) => {
         db.collection('lecturers').deleteOne({ _id: id }) 
             .then((documents) => {
-                resolve(documents);  // Return the fetched documents
+                resolve(documents);  //returning the fetched documents
                 console.log("deleted successfully")
             })
             .catch((error) => {
-                reject(error);  // Handle errors
+                reject(error);  //handling errors
             });
     });
 }
