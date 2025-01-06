@@ -29,7 +29,6 @@ app.get("/students", (req, res) => {
     .then((data) => {
         //res.send(data)
         //sending the students file instead of the raw data - passing in the students db to the students filel
-        //console.log(JSON.stringify(data)) - locating th eerror and seeing the data it outputs 
         res.render("students", {studentList: data})
     })
     .catch((error) => {
@@ -37,6 +36,7 @@ app.get("/students", (req, res) => {
     })
 });
 
+//When a new student is added 
 app.get("/students/add", (req, res) => {
     res.render("newStudent", {errors: [], student:[]}) //passing an empty array of errors and students
 
@@ -81,11 +81,13 @@ app.post("/students/add", (req, res) => {
 
 });
 
+//when a students details is edited
 app.get("/students/edit/:sid", (req, res) => {
     mysqlDAO.studentById(req.params.sid)
     .then((data) => {
         console.log(data)
-        res.render("updateStudent", {errors: [], student: data}); 
+        const student = data[0]; //gettign the first result from the array 
+        res.render("updateStudent", {errors: [], student}); 
     })
     .catch((error) => {
         res.send(error)
@@ -96,7 +98,7 @@ app.post("/students/edit/:sid", (req, res) => {
     const { sid, name, age } = req.body;
     //an array for holding the errors 
     let errors = [];
-    let student = [sid,name,age]
+    let student = {sid,name,age};
     //pushing errors to the array
     if (name.length < 2) {
         errors.push("Student Name should be at least 2 characters.");
@@ -120,6 +122,7 @@ app.post("/students/edit/:sid", (req, res) => {
         });
 });
 
+//https://www.w3schools.com/jsref/jsref_promise_all.asp
 app.get("/grades", (req, res) => {
     Promise.all([mysqlDAO.getGrades(), mysqlDAO.getStudentAverageGrade()])
     .then(([data, modules]) => {
@@ -130,6 +133,7 @@ app.get("/grades", (req, res) => {
     })
 });
 
+//when the lecturers page is loaded
 app.get("/lecturers", (req, res) => {
     mongoDao.findAll()
     .then((data) => {
@@ -144,6 +148,7 @@ app.get("/lecturers", (req, res) => {
     })
 })
 
+//when a lecturer is to be deleted 
 app.get("/lecturers/delete/:lid", (req, res) => {
     const lid = req.params.lid; //lid from re param
     mysqlDAO.getModuleLecturer(lid)
@@ -169,6 +174,7 @@ app.get("/lecturers/delete/:lid", (req, res) => {
     
 })
 
+//modules page loaded
 app.get("/modules", (req, res) => {
     Promise.all([mysqlDAO.getModules(), mysqlDAO.getAverageGradeForModule()])
     .then(([data, modules]) => {

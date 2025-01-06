@@ -5,10 +5,9 @@
     <% }) %>
 </ul>
 
-<% student.forEach((student) =>
-{ %>
-    <form action="/students/edit/<%= student.sid %>" method="POST">
-        <label for="sid">Student ID: </label>
+<form action="/students/edit/<%= student.sid %>" method="POST">
+    
+    <label for="sid">Student ID: </label>
     <input type="text" name="sid" value="<%= student.sid %>" readonly>
     <br>
     <label for="name">Name: </label>
@@ -19,6 +18,5 @@
     <br>
     <input type="submit" value="Add">
 </form>
-<% }) %>
 
 
